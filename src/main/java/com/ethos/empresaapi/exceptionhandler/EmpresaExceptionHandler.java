@@ -5,14 +5,37 @@ import com.ethos.empresaapi.exception.EmpresaNaoExisteException;
 import java.time.LocalDateTime;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class EmpresaExceptionHandler {
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ProblemDetail methodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        if(exception.getMessage().contains("Cnpj inválido")){
+            problemDetail.setDetail("O cnpj informado é inválido");
+        }
+        problemDetail.setTitle("Corpo da requisição inválida");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ProblemDetail httpMessageNotReadableException(HttpMessageNotReadableException exception) {
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        if (exception.getMessage().contains("cnpj")) {
+            problemDetail.setDetail("O campo CNPJ não pode ser nulo");
+        }
+        problemDetail.setDetail("Corpo da requisição inválida, algum campo está nulo");
+        problemDetail.setTitle("Requisição inválida");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
     @ExceptionHandler(EmpresaNaoExisteException.class)
     public ProblemDetail empresaNaoExisteException(EmpresaNaoExisteException exception) {
-        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problemDetail.setDetail(exception.getMessage());
         problemDetail.setTitle("Empresa não encontrada");
         problemDetail.setProperty("timestamp", LocalDateTime.now());
