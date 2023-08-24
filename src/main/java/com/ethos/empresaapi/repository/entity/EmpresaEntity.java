@@ -5,8 +5,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.Builder;
+import lombok.Getter;
 import org.hibernate.annotations.Immutable;
 
+@Getter
 @Table(name = "EMPRESA")
 @Entity
 @Immutable
@@ -30,32 +32,16 @@ public class EmpresaEntity {
         this.telefone = telefone;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public String getCnpj() {
-        return cnpj;
-    }
-
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
-    }
-
-    public String getTelefone() {
-        return telefone;
     }
 
     public void setTelefone(String telefone) {

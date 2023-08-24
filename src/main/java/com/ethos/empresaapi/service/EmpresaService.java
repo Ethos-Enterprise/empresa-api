@@ -60,7 +60,7 @@ public class EmpresaService {
         Optional<EmpresaEntity> entity;
         entity = repository.findById(id);
         if (entity.isEmpty()) {
-            throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id.toString()));
+            throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
         }
         repository.updateNome(request.nome(), id);
         repository.updateTelefone(request.telefone(), id);
@@ -73,7 +73,7 @@ public class EmpresaService {
             repository.deleteById(id);
             return "Empresa deletada com sucesso";
         } catch (Exception e) {
-            return "Empresa não encontrada";
+            throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
         }
     }
 }
