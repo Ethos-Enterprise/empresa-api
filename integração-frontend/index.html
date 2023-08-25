@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Cadastrar empresa</h1>
+
+    <input type="text", id="in_nome", placeholder="nome"> <br> <br>
+    <input type="text", id="in_telefone", placeholder="telefone"> <br><br>
+    <input type="text", id="in_cnpj", placeholder="cnpj"> <br> <br>
+    <button onclick="cadastrar()">cadastrar</button>
+    <br><br>
+    
+    <h1>Consultar empresas</h1>
+    <div id="empresas"></div>
+    <button onclick="consultar()">Consultar</button>
+
+    <h1>Atualizar empresa</h1>
+    <input type="text", id="in_att_id", placeholder="id"> <br> <br>
+    <input type="text", id="in_att_nome", placeholder="nome"> <br> <br>
+    <input type="text", id="in_att_telefone", placeholder="telefone"> <br><br>
+    <input type="text", id="in_att_cnpj", placeholder="cnpj"> <br> <br>
+    <button onclick="atualizar()">atualizar</button>
+
+    <h1>Deletar empresa</h1>
+    <input type="text", id="in_dlt_id", placeholder="id"> <br> <br>
+    <button onclick="deletar()">Deletar</button>
+</body>
+</html>
+<script>
+    
+    function cadastrar(){
+        var nome = document.getElementById("in_nome").value
+        var telefone = document.getElementById("in_telefone").value
+        var cnpj = document.getElementById("in_cnpj").value
+        
+        fetch("http://localhost:8082/empresas/v1.0",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                nome: nome,
+                cnpj: cnpj,
+                telefone: telefone
+            })
+            })
+            .then(function (res) { console.log(res.json().then(json => {
+                console.log(json);
+                console.log(JSON.stringify(json));
+            })) })
+            .catch(function (res) { console.log(res) })
+    }
+
+    function consultar(){
+        fetch("http://localhost:8082/empresas/v1.0",
+        {
+            method: "GET"
+        })
+        .then(function (res) { console.log(res.json().then(json => {
+            console.log(json);
+            console.log(JSON.stringify(json));
+            document.getElementById("empresas").innerHTML = ""
+
+            for(var i = 0; i < json.length; i++){
+                document.getElementById("empresas").innerHTML += `
+                id: ${json[i].id}<br>
+                nome: ${json[i].nome}<br>
+                cnpj: ${json[i].cnpj}<br>
+                telefone: ${json[i].telefone}<br><br>
+                ` 
+            }
+        }))})
+    }
+
+    function atualizar(){
+        var id = document.getElementById("in_att_id").value
+        var nome = document.getElementById("in_att_nome").value
+        var telefone = document.getElementById("in_att_telefone").value
+        var cnpj = document.getElementById("in_att_cnpj").value
+        if(id == ""){
+            alert("Você precisa informar o id da empresa que pretende atualizar")
+        }
+        if(nome == ""){
+            nome = null
+        }
+        if(telefone == ""){
+            telefone = null
+        }
+        if(cnpj == ""){
+            cnpj = null;
+        }
+        fetch(`http://localhost:8082/empresas/v1.0/${id}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                nome: nome,
+                cnpj: cnpj,
+                telefone: telefone
+            })
+        }).then(function (res) { console.log(res.json().then(json => {
+            console.log(json)
+            console.log(JSON.stringify(json))
+            if(res.ok){
+                alert("atualizado com sucesso")
+            }
+        }))})
+        .catch(function (res) { console.log(res)})
+    }
+
+    function deletar(){
+        var id = document.getElementById("in_dlt_id").value
+        if(id == ""){
+            alert("Você precisa informar o id da empresa que pretende deletar")
+        }
+        fetch(`http://localhost:8082/empresas/v1.0/${id}`,
+        {
+            method: "DELETE"
+        }).then(function (res) { console.log(res)
+            if(res.ok){
+                alert("deletado com sucesso")
+            }else{
+                alert("empresa não existe")
+            }
+        })
+        .catch(function (res) { console.log(res)})
+    }
+
+</script>

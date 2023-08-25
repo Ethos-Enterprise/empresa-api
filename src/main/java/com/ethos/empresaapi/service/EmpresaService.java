@@ -62,18 +62,25 @@ public class EmpresaService {
         if (entity.isEmpty()) {
             throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
         }
-        repository.updateNome(request.nome(), id);
-        repository.updateTelefone(request.telefone(), id);
-        repository.updateCnpj(request.cnpj(), id);
-        return entity.map(empresaResponseMapper::from).get();
+        if (request.nome() != null && !request.nome().isEmpty()) {
+            repository.updateNome(request.nome(), id);
+        }
+        if (request.telefone() != null && !request.telefone().isEmpty()) {
+            repository.updateTelefone(request.telefone(), id);
+        }
+        if (request.cnpj() != null && !request.cnpj().isEmpty()) {
+            repository.updateCnpj(request.cnpj(), id);
+        }
+
+        return repository.findById(id).map(empresaResponseMapper::from).get();
     }
 
     public String deleteEmpresaById(UUID id) {
-        try {
-            repository.deleteById(id);
-            return "Empresa deletada com sucesso";
-        } catch (Exception e) {
+        Optional<EmpresaEntity> empresa = repository.findById(id);
+        if (empresa.isEmpty()) {
             throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
         }
+        repository.deleteById(id);
+        return "Empresa deletada com sucesso";
     }
 }
