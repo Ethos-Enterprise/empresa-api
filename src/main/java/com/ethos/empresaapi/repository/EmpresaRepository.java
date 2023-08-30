@@ -25,4 +25,6 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, UUID> {
     @Query("update EmpresaEntity e set e.cnpj = ?1 where e.id = ?2")
     void updateCnpj(@NonNull String cnpj, @NonNull UUID id);
     List<EmpresaEntity> findByCnpj(String cnpj);
+
+    List<EmpresaEntity> findByEmailAndSenha(String email, String senha);
 }

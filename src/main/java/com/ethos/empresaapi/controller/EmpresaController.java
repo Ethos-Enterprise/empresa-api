@@ -52,4 +52,9 @@ public class EmpresaController {
     public String deleteEmpresaById(@PathVariable UUID id) {
         return empresaService.deleteEmpresaById(id);
     }
+
+    @GetMapping("/login/{email}/{senha}")
+    public EmpresaResponse getEmpresaByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
+        return empresaService.getEmpresaByEmailAndSenha(email, senha);
+    }
 }

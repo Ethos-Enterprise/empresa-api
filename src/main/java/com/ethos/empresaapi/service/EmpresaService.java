@@ -13,6 +13,7 @@ import com.ethos.empresaapi.repository.entity.EmpresaEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -82,5 +83,13 @@ public class EmpresaService {
         }
         repository.deleteById(id);
         return "Empresa deletada com sucesso";
+    }
+
+    public EmpresaResponse getEmpresaByEmailAndSenha(String email, String senha) {
+        List<EmpresaEntity> empresa = repository.findByEmailAndSenha(email, senha);
+        if (empresa.isEmpty()) {
+            throw new EmpresaNaoExisteException("Email ou senha inválido");
+        }
+        return empresa.stream().map(empresaResponseMapper::from).toList().get(0);
     }
 }
