@@ -62,8 +62,8 @@ public class EmpresaService {
         if (entity.isEmpty()) {
             throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
         }
-        if (request.nome() != null && !request.nome().isEmpty()) {
-            repository.updateNome(request.nome(), id);
+        if (request.razaoSocial() != null && !request.razaoSocial().isEmpty()) {
+            repository.updateNome(request.razaoSocial(), id);
         }
         if (request.telefone() != null && !request.telefone().isEmpty()) {
             repository.updateTelefone(request.telefone(), id);
