@@ -13,7 +13,6 @@ import com.ethos.empresaapi.repository.entity.EmpresaEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -35,12 +34,19 @@ public class EmpresaService {
     }
 
     private EmpresaEntity saveEmpresa(EmpresaEntity entity) {
-        EmpresaEntity empresaSaved;
+        EmpresaEntity empresaSaved = null;
         try {
             empresaSaved = repository.save(entity);
         } catch (DataIntegrityViolationException e) {
-            throw new EmpresaJaExisteException("Empresa com o CNPJ %s já cadastrada".formatted(entity.getCnpj()));
+            if (e.getMessage().contains("cnpj")) {
+                throw new EmpresaJaExisteException("Empresa com o CNPJ %s já cadastrada".formatted(entity.getCnpj()));
+            } else if (e.getMessage().contains("email")) {
+                throw new EmpresaJaExisteException("Empresa com o email %s já cadastrada".formatted(entity.getEmail()));
+            } else if (e.getMessage().contains("telefone")) {
+                throw new EmpresaJaExisteException("Empresa com o telefone %s já cadastrada".formatted(entity.getTelefone()));
+            }
         }
+
         return empresaSaved;
     }
 
