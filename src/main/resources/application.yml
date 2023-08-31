@@ -7,9 +7,9 @@ spring:
     init:
       continue-on-error: true
   datasource:
-    url: jdbc:postgresql://localhost:5435/postgres
-    username: admin
-    password: senha123
+    url: jdbc:postgresql://postgres-ethos.postgres.database.azure.com:5432/postgres
+    username: postgres
+    password: Senha123
     driver-class-name: org.postgresql.Driver
   jpa:
     generate-ddl: false

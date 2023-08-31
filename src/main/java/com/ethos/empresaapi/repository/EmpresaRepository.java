@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface EmpresaRepository extends JpaRepository<EmpresaEntity, UUID> {
     @Transactional
     @Modifying
-    @Query("update EmpresaEntity e set e.nome = ?1 where e.id = ?2")
+    @Query("update EmpresaEntity e set e.razaoSocial = ?1 where e.id = ?2")
     void updateNome(@NonNull String nome, @NonNull UUID id);
 
     @Transactional

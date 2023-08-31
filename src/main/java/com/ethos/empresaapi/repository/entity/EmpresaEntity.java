@@ -16,7 +16,7 @@ public class EmpresaEntity {
     @Id
     UUID id;
 
-    String nome;
+    String razaoSocial;
 
     String cnpj;
 
@@ -28,30 +28,29 @@ public class EmpresaEntity {
 
     String setor;
 
-    Integer quantidadeFuncionarios;
+    Integer qtdFuncionarios;
 
     public EmpresaEntity() {
     }
     @Builder(toBuilder = true)
-    public EmpresaEntity(String nome, String cnpj, String telefone, String email, String senha, String setor, Integer quantidadeFuncionarios) {
+    public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, Integer qtdFuncionarios) {
         this.id = UUID.randomUUID();
-        this.nome = nome;
+        this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
         this.telefone = telefone;
         this.email = email;
         this.senha = senha;
         this.setor = setor;
-        this.quantidadeFuncionarios = quantidadeFuncionarios;
+        this.qtdFuncionarios = qtdFuncionarios;
     }
 
     public void setId(UUID id) {
         this.id = id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setRazaoSocial(String razaoSocial) {
+        this.razaoSocial = razaoSocial;
     }
-
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
@@ -72,7 +71,7 @@ public class EmpresaEntity {
         this.setor = setor;
     }
 
-    public void setQuantidadeFuncionarios(Integer quantidadeFuncionarios) {
-        this.quantidadeFuncionarios = quantidadeFuncionarios;
+    public void setQtdFuncionarios(Integer qtdFuncionarios) {
+        this.qtdFuncionarios = qtdFuncionarios;
     }
 }

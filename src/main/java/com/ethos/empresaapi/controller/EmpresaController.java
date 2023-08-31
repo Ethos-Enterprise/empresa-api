@@ -33,6 +33,11 @@ public class EmpresaController {
         return empresaService.postEmpresa(request);
     }
 
+    @GetMapping("/teste")
+    public String teste() {
+        return "Teste";
+    }
+
     @GetMapping
     public List<EmpresaResponse> getAllEmpresa() {
         return empresaService.getAllEmpresa();
