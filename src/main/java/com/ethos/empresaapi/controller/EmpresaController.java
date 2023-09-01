@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/empresas/v1.0")
+@RequestMapping(path = "/v1.0/empresas")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class EmpresaController {
