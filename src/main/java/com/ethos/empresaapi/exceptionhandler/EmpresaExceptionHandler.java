@@ -20,7 +20,7 @@ public class EmpresaExceptionHandler {
         }
         if(exception.getMessage().contains("branco")){
             switch (exception.getFieldError().getField()) {
-                case "razaoSocial" -> problemDetail.setDetail("O campo razão social não pode ser nulo");
+                case "razaoSocial" -> problemDetail.setDetail("O campo razão social não pode ser branco");
                 case "cnpj" -> problemDetail.setDetail("O campo CNPJ não pode ser branco");
                 case "telefone" -> problemDetail.setDetail("O campo telefone não pode ser branco");
                 case "email" -> problemDetail.setDetail("O campo email não pode ser branco");
