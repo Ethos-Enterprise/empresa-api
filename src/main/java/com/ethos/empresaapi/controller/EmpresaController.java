@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,19 @@ public class EmpresaController {
     }
 
     @GetMapping
-    public List<EmpresaResponse> getAllEmpresa() {
+    public List<EmpresaResponse> getAllEmpresa(@RequestParam(value = "nome", required = false) String nome,
+                                               @RequestParam(value = "cnpj", required = false) String cnpj,
+                                               @RequestParam(value = "telefone", required = false) String telefone,
+                                               @RequestParam(value = "setor", required = false) String setor) {
+        if (nome != null) {
+            return empresaService.getEmpresaByNome(nome);
+        } else if (cnpj != null) {
+            return empresaService.getEmpresaByCnpj(cnpj);
+        } else if (telefone != null) {
+            return empresaService.getEmpresaByTelefone(telefone);
+        } else if (setor != null) {
+            return empresaService.getEmpresaBySetor(setor);
+        }
         return empresaService.getAllEmpresa();
     }
 

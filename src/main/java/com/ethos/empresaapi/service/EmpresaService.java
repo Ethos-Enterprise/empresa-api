@@ -78,6 +78,18 @@ public class EmpresaService {
         if (request.cnpj() != null && !request.cnpj().isEmpty()) {
             repository.updateCnpj(request.cnpj(), id);
         }
+        if (request.email() != null && !request.email().isEmpty()) {
+            repository.updateEmail(request.email(), id);
+        }
+        if (request.senha() != null && !request.senha().isEmpty()) {
+            repository.updateSenha(request.senha(), id);
+        }
+        if (request.setor() != null && !request.setor().isEmpty()) {
+            repository.updateSetor(request.setor(), id);
+        }
+        if (request.qtdFuncionarios() != null) {
+            repository.updateQtdFuncionarios(request.qtdFuncionarios(), id);
+        }
 
         return repository.findById(id).map(empresaResponseMapper::from).get();
     }
@@ -97,5 +109,25 @@ public class EmpresaService {
             throw new EmpresaNaoExisteException("Email ou senha inválido");
         }
         return empresa.stream().map(empresaResponseMapper::from).toList().get(0);
+    }
+
+    public List<EmpresaResponse> getEmpresaBySetor(String setor) {
+        List<EmpresaEntity> empresa = repository.findBySetor(setor);
+        return empresa.stream().map(empresaResponseMapper::from).toList();
+    }
+
+    public List<EmpresaResponse> getEmpresaByNome(String nome) {
+        List<EmpresaEntity> empresa = repository.findByRazaoSocial(nome);
+        return empresa.stream().map(empresaResponseMapper::from).toList();
+    }
+
+    public List<EmpresaResponse> getEmpresaByCnpj(String cnpj) {
+        List<EmpresaEntity> empresa = repository.findByCnpj(cnpj);
+        return empresa.stream().map(empresaResponseMapper::from).toList();
+    }
+
+    public List<EmpresaResponse> getEmpresaByTelefone(String telefone) {
+        List<EmpresaEntity> empresa = repository.findByTelefone(telefone);
+        return empresa.stream().map(empresaResponseMapper::from).toList();
     }
 }
