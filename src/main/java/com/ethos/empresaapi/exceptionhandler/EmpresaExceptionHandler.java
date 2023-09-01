@@ -35,6 +35,9 @@ public class EmpresaExceptionHandler {
                 case "senha" -> problemDetail.setDetail("O campo senha não pode ser nulo");
             }
         }
+        if(exception.getMessage().contains("email inválido")){
+            problemDetail.setDetail("O email informado é inválido");
+        }
         problemDetail.setTitle("Corpo da requisição inválida");
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
