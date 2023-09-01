@@ -18,6 +18,23 @@ public class EmpresaExceptionHandler {
         if(exception.getMessage().contains("Cnpj inválido")){
             problemDetail.setDetail("O cnpj informado é inválido");
         }
+        if(exception.getMessage().contains("branco")){
+            switch (exception.getFieldError().getField()) {
+                case "razaoSocial" -> problemDetail.setDetail("O campo razão social não pode ser nulo");
+                case "cnpj" -> problemDetail.setDetail("O campo CNPJ não pode ser branco");
+                case "telefone" -> problemDetail.setDetail("O campo telefone não pode ser branco");
+                case "email" -> problemDetail.setDetail("O campo email não pode ser branco");
+                case "senha" -> problemDetail.setDetail("O campo senha não pode ser branco");
+            }
+        } else if (exception.getMessage().contains("nulo") || exception.getMessage().contains("nula")) {
+            switch (exception.getMessage()) {
+                case "razaoSocial" -> problemDetail.setDetail("O campo razão social não pode ser nulo");
+                case "cnpj" -> problemDetail.setDetail("O campo CNPJ não pode ser nulo");
+                case "telefone" -> problemDetail.setDetail("O campo telefone não pode ser nulo");
+                case "email" -> problemDetail.setDetail("O campo email não pode ser nulo");
+                case "senha" -> problemDetail.setDetail("O campo senha não pode ser nulo");
+            }
+        }
         problemDetail.setTitle("Corpo da requisição inválida");
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
