@@ -1,5 +1,6 @@
 package com.ethos.empresaapi.exceptionhandler;
 
+import com.ethos.empresaapi.exception.EnderecoNaoEncontradoException;
 import com.ethos.empresaapi.exception.EmpresaJaExisteException;
 import com.ethos.empresaapi.exception.EmpresaNaoExisteException;
 import java.time.LocalDateTime;
@@ -42,6 +43,16 @@ public class EmpresaExceptionHandler {
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
     }
+
+    @ExceptionHandler(EnderecoNaoEncontradoException.class)
+    public ProblemDetail cepInvalidoException(EnderecoNaoEncontradoException exception) {
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setDetail(exception.getMessage());
+        problemDetail.setTitle("CEP inválido");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail httpMessageNotReadableException(HttpMessageNotReadableException exception) {
         final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);

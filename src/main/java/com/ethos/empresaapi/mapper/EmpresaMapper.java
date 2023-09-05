@@ -1,10 +1,17 @@
 package com.ethos.empresaapi.mapper;
 
 import com.ethos.empresaapi.controller.request.EmpresaRequest;
-import com.ethos.empresaapi.model.EmpresaModel;
+import com.ethos.empresaapi.model.Empresa;
+import com.ethos.empresaapi.model.Endereco;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", nullValueMappingStrategy = org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT)
 public interface EmpresaMapper {
-    EmpresaModel from(EmpresaRequest empresaRequest);
+    @Mapping(target = "endereco", source = "enderecoRequest")
+    Empresa from(EmpresaRequest empresaRequest);
+    @Mapping(target = "logradouro", ignore = true)
+    @Mapping(target = "bairro", ignore = true)
+    @Mapping(target = "uf", ignore = true)
+    Endereco from(EmpresaRequest.EnderecoRequest enderecoRequest);
 }

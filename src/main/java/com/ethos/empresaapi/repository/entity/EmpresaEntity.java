@@ -1,7 +1,10 @@
 package com.ethos.empresaapi.repository.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.Builder;
@@ -28,12 +31,16 @@ public class EmpresaEntity {
 
     String setor;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    EnderecoEntity endereco;
+
     Integer qtdFuncionarios;
 
     public EmpresaEntity() {
     }
     @Builder(toBuilder = true)
-    public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, Integer qtdFuncionarios) {
+    public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, EnderecoEntity endereco, Integer qtdFuncionarios) {
         this.id = UUID.randomUUID();
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
@@ -41,6 +48,7 @@ public class EmpresaEntity {
         this.email = email;
         this.senha = senha;
         this.setor = setor;
+        this.endereco = endereco;
         this.qtdFuncionarios = qtdFuncionarios;
     }
 
@@ -74,4 +82,9 @@ public class EmpresaEntity {
     public void setQtdFuncionarios(Integer qtdFuncionarios) {
         this.qtdFuncionarios = qtdFuncionarios;
     }
+
+    public void setEndereco(EnderecoEntity endereco) {
+        this.endereco = endereco;
+    }
+
 }

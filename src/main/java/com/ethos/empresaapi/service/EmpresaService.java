@@ -1,13 +1,16 @@
 package com.ethos.empresaapi.service;
 
+import com.ethos.empresaapi.api.ViaCepApiClient;
+import com.ethos.empresaapi.api.addressdto.AddressViaCep;
 import com.ethos.empresaapi.controller.request.EmpresaRequest;
 import com.ethos.empresaapi.controller.response.EmpresaResponse;
 import com.ethos.empresaapi.exception.EmpresaJaExisteException;
 import com.ethos.empresaapi.exception.EmpresaNaoExisteException;
+import com.ethos.empresaapi.exception.EnderecoNaoEncontradoException;
 import com.ethos.empresaapi.mapper.EmpresaEntityMapper;
 import com.ethos.empresaapi.mapper.EmpresaMapper;
 import com.ethos.empresaapi.mapper.EmpresaResponseMapper;
-import com.ethos.empresaapi.model.EmpresaModel;
+import com.ethos.empresaapi.model.Empresa;
 import com.ethos.empresaapi.repository.EmpresaRepository;
 import com.ethos.empresaapi.repository.entity.EmpresaEntity;
 import java.util.List;
@@ -21,14 +24,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmpresaService {
 
+    private final ViaCepApiClient viaCepApiClient;
     private final EmpresaRepository repository;
     private final EmpresaMapper empresaModelMapper;
     private final EmpresaEntityMapper empresaEntityMapper;
     private final EmpresaResponseMapper empresaResponseMapper;
 
     public EmpresaResponse postEmpresa(EmpresaRequest request) {
-        EmpresaModel model = empresaModelMapper.from(request);
-        EmpresaEntity entity = empresaEntityMapper.from(model);
+        Empresa model = empresaModelMapper.from(request);
+        final String cep = request.enderecoRequest() == null ? null : request.enderecoRequest().cep();
+        AddressViaCep addressViaCep = getAddressViaCep(cep);
+        Empresa modelAddressUpdated = model.updateEnderecoFrom(addressViaCep);
+        EmpresaEntity entity = empresaEntityMapper.from(modelAddressUpdated);
         EmpresaEntity savedEntity = saveEmpresa(entity);
         return empresaResponseMapper.from(savedEntity);
     }
@@ -129,5 +136,16 @@ public class EmpresaService {
     public List<EmpresaResponse> getEmpresaByTelefone(String telefone) {
         List<EmpresaEntity> empresa = repository.findByTelefone(telefone);
         return empresa.stream().map(empresaResponseMapper::from).toList();
+    }
+
+    private AddressViaCep getAddressViaCep(String cep) {
+        if (cep != null) {
+            final AddressViaCep addressViaCep = viaCepApiClient.getAddress(cep);
+            if (addressViaCep.cep() == null) {
+                throw new EnderecoNaoEncontradoException("Endereco não com cep %s não existe".formatted(cep));
+            }
+            return addressViaCep;
+        }
+        return null;
     }
 }
