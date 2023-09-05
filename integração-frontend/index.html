@@ -9,9 +9,16 @@
 
     <h1>Cadastrar empresa</h1>
 
-    <input type="text", id="in_nome", placeholder="nome"> <br> <br>
+    <input type="text", id="in_nome", placeholder="razão social"> <br> <br>
     <input type="text", id="in_telefone", placeholder="telefone"> <br><br>
     <input type="text", id="in_cnpj", placeholder="cnpj"> <br> <br>
+    <input type="email", id="in_email", placeholder="email"> <br> <br>
+    <input type="password", id="in_senha", placeholder="senha"> <br> <br>
+    <input type="number", id="in_qtdFuncionarios", placeholder="quantidade de funcionários"> <br> <br>
+    <input type="text", id="in_setor", placeholder="setor"> <br> <br>
+    <input type="text", id="in_cep", placeholder="cep"> <br> <br>
+    <input type="text", id="in_numero", placeholder="número"> <br> <br>
+    <input type="text", id="in_complemento", placeholder="complemento"> <br> <br>
     <button onclick="cadastrar()">cadastrar</button>
     <br><br>
     
@@ -37,17 +44,35 @@
         var nome = document.getElementById("in_nome").value
         var telefone = document.getElementById("in_telefone").value
         var cnpj = document.getElementById("in_cnpj").value
-        
-        fetch("http://localhost:8082/empresas/v1.0",
+        var email = document.getElementById("in_email").value
+        var senha = document.getElementById("in_senha").value
+        var qtdFuncionario = document.getElementById("in_qtdFuncionarios").value
+        var setor = document.getElementById("in_setor").value
+        var cep = document.getElementById("in_cep").value
+        var numero = document.getElementById("in_numero").value
+        var complemento = document.getElementById("in_complemento").value
+
+        var enderecoRequest = {
+            cep: cep,
+            numero: numero,
+            complemento: complemento
+        }
+
+        fetch("https://empresa-api-1693494375889.azurewebsites.net/v1.0/empresas",
         {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                nome: nome,
+                razaoSocial: nome,
                 cnpj: cnpj,
-                telefone: telefone
+                telefone: telefone,
+                email: email,
+                senha: senha,
+                qtdFuncionarios: qtdFuncionario,
+                setor: setor,
+                enderecoRequest: enderecoRequest
             })
             })
             .then(function (res) { console.log(res.json().then(json => {
@@ -58,7 +83,7 @@
     }
 
     function consultar(){
-        fetch("http://localhost:8082/empresas/v1.0",
+        fetch("https://empresa-api-1693494375889.azurewebsites.net/v1.0/empresas",
         {
             method: "GET"
         })
@@ -70,7 +95,7 @@
             for(var i = 0; i < json.length; i++){
                 document.getElementById("empresas").innerHTML += `
                 id: ${json[i].id}<br>
-                nome: ${json[i].nome}<br>
+                razaoSocial: ${json[i].razaoSocial}<br>
                 cnpj: ${json[i].cnpj}<br>
                 telefone: ${json[i].telefone}<br><br>
                 ` 
