@@ -62,7 +62,7 @@ public class EmpresaController {
     }
 
     @PutMapping("/{id}")
-    public EmpresaResponse putEmpresaById(@PathVariable UUID id, @RequestBody @Valid EmpresaRequest request) {
+    public EmpresaResponse putEmpresaById(@PathVariable UUID id, @RequestBody EmpresaRequest request) {
         return empresaService.putEmpresaById(id, request);
     }
 

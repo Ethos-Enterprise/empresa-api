@@ -12,7 +12,9 @@ import com.ethos.empresaapi.mapper.EmpresaMapper;
 import com.ethos.empresaapi.mapper.EmpresaResponseMapper;
 import com.ethos.empresaapi.model.Empresa;
 import com.ethos.empresaapi.repository.EmpresaRepository;
+import com.ethos.empresaapi.repository.PrestadoraRepository;
 import com.ethos.empresaapi.repository.entity.EmpresaEntity;
+import com.ethos.empresaapi.repository.entity.PrestadoraEntity;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +28,7 @@ public class EmpresaService {
 
     private final ViaCepApiClient viaCepApiClient;
     private final EmpresaRepository repository;
+    private final PrestadoraRepository prestadoraRepository;
     private final EmpresaMapper empresaModelMapper;
     private final EmpresaEntityMapper empresaEntityMapper;
     private final EmpresaResponseMapper empresaResponseMapper;
@@ -55,6 +58,10 @@ public class EmpresaService {
         }
 
         return empresaSaved;
+    }
+
+    private PrestadoraEntity savePrestadora(PrestadoraEntity entity) {
+        return prestadoraRepository.save(entity);
     }
 
     public List<EmpresaResponse> getAllEmpresa() {

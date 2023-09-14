@@ -47,7 +47,8 @@ public class EnderecoEntity {
     }
 
     public String getNumero() {
-        return numero;
+
+         return numero;
     }
 
     public void setNumero(String numero) {
