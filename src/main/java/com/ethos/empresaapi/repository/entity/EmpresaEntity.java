@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Immutable;
 
 @Getter
@@ -31,6 +32,9 @@ public class EmpresaEntity {
 
     String setor;
 
+    @Formula("(select * from consultar_empresa_prestadora_por_id(id))")
+    String status_prestadora;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id", referencedColumnName = "id")
     EnderecoEntity endereco;
@@ -39,8 +43,10 @@ public class EmpresaEntity {
 
     public EmpresaEntity() {
     }
+
     @Builder(toBuilder = true)
-    public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, EnderecoEntity endereco, Integer qtdFuncionarios) {
+    public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, EnderecoEntity endereco,
+                         Integer qtdFuncionarios, String status_prestadora) {
         this.id = UUID.randomUUID();
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
@@ -50,6 +56,7 @@ public class EmpresaEntity {
         this.setor = setor;
         this.endereco = endereco;
         this.qtdFuncionarios = qtdFuncionarios;
+        this.status_prestadora = status_prestadora;
     }
 
     public void setId(UUID id) {
@@ -59,6 +66,7 @@ public class EmpresaEntity {
     public void setRazaoSocial(String razaoSocial) {
         this.razaoSocial = razaoSocial;
     }
+
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
@@ -81,6 +89,9 @@ public class EmpresaEntity {
 
     public void setQtdFuncionarios(Integer qtdFuncionarios) {
         this.qtdFuncionarios = qtdFuncionarios;
+    }
+    public void setStatus_prestadora(String status_prestadora) {
+        this.status_prestadora = status_prestadora;
     }
 
     public void setEndereco(EnderecoEntity endereco) {
