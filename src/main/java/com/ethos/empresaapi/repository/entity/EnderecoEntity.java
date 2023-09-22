@@ -24,7 +24,6 @@ public class EnderecoEntity {
     String bairro;
 
     String uf;
-
     public EnderecoEntity() {
     }
     @Builder(toBuilder = true)

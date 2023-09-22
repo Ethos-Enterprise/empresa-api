@@ -145,8 +145,7 @@
 								<value>-Dserver.port=80</value>
 						</property>
 					</appSettings>
-		            <deployment>
-		                <resources>
+		            <deployment><resources>
 		                    <resource>
 		                        <directory>${project.basedir}/target</directory>
 		                        <includes>
