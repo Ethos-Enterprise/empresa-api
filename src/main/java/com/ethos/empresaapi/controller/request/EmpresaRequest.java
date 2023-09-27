@@ -12,7 +12,7 @@ public record EmpresaRequest(@NotBlank(message = "razão social em branco") @Not
                              @NotNull(message = "email nulo") @NotBlank(message = "email em branco") @Email(message = "email inválido") String email,
                              @NotNull(message = "senha nula") @NotBlank(message = "senha em branco") String senha, String setor,
                              Integer qtdFuncionarios,
-                             EnderecoRequest enderecoRequest) {
+                             EnderecoRequest endereco) {
     public record EnderecoRequest(String cep, String numero, String complemento) {
         @Builder(toBuilder = true)
         public EnderecoRequest {

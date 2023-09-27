@@ -32,7 +32,7 @@ public class EmpresaService {
 
     public EmpresaResponse postEmpresa(EmpresaRequest request) {
         Empresa model = empresaModelMapper.from(request);
-        final String cep = request.enderecoRequest() == null ? null : request.enderecoRequest().cep();
+        final String cep = request.endereco() == null ? null : request.endereco().cep();
         AddressViaCep addressViaCep = getAddressViaCep(cep);
         Empresa modelAddressUpdated = model.updateEnderecoFrom(addressViaCep);
         EmpresaEntity entity = empresaEntityMapper.from(modelAddressUpdated);
@@ -51,6 +51,8 @@ public class EmpresaService {
                 throw new EmpresaJaExisteException("Empresa com o email %s já cadastrada".formatted(entity.getEmail()));
             } else if (e.getMessage().contains("telefone")) {
                 throw new EmpresaJaExisteException("Empresa com o telefone %s já cadastrada".formatted(entity.getTelefone()));
+            }else if(e.getMessage().contains("razao_social")){
+                throw new EmpresaJaExisteException("Empresa com a razão social %s já cadastrada".formatted(entity.getRazaoSocial()));
             }
         }
 

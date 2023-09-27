@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", nullValueMappingStrategy = org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT)
 public interface EmpresaMapper {
-    @Mapping(target = "endereco", source = "enderecoRequest")
+    @Mapping(target = "endereco", source = "endereco")
     Empresa from(EmpresaRequest empresaRequest);
     @Mapping(target = "logradouro", ignore = true)
     @Mapping(target = "bairro", ignore = true)
