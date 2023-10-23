@@ -8,16 +8,18 @@ public record Endereco(
         String logradouro,
         String complemento,
         String bairro,
-        String uf
+        String uf,
+        Empresa empresa
 ) {
     @Builder(toBuilder = true)
-    public Endereco(String cep, String numero, String logradouro, String complemento, String bairro, String uf) {
+    public Endereco(String cep, String numero, String logradouro, String complemento, String bairro, String uf, Empresa empresa) {
         this.cep = cep;
         this.numero = numero;
         this.logradouro = logradouro;
         this.complemento = complemento;
         this.bairro = bairro;
         this.uf = uf;
+        this.empresa = empresa;
     }
 
     @Override

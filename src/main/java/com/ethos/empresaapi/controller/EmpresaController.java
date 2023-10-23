@@ -33,12 +33,7 @@ public class EmpresaController {
     public EmpresaResponse postEmpresa(@RequestBody @Valid EmpresaRequest request) {
         return empresaService.postEmpresa(request);
     }
-
-    @GetMapping("/teste")
-    public String teste() {
-        return "Teste";
-    }
-
+    //localhost:8080/v1.0/empresas
     @GetMapping
     public List<EmpresaResponse> getAllEmpresa(@RequestParam(value = "nome", required = false) String nome,
                                                @RequestParam(value = "cnpj", required = false) String cnpj,
@@ -74,5 +69,10 @@ public class EmpresaController {
     @GetMapping("/login/{email}/{senha}")
     public EmpresaResponse getEmpresaByEmailAndSenha(@PathVariable String email, @PathVariable String senha) {
         return empresaService.getEmpresaByEmailAndSenha(email, senha);
+    }
+
+    @GetMapping("/assinante")
+    public List<EmpresaResponse> getEmpresaByAssinanteNewsletter(@RequestParam Boolean assinanteNewsletter) {
+        return empresaService.getEmpresaByAssinanteNewsletter(assinanteNewsletter);
     }
 }

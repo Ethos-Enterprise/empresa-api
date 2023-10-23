@@ -51,7 +51,7 @@
         var cep = document.getElementById("in_cep").value
         var numero = document.getElementById("in_numero").value
         var complemento = document.getElementById("in_complemento").value
-
+       
         var enderecoRequest = {
             cep: cep,
             numero: numero,
@@ -80,6 +80,7 @@
                 console.log(JSON.stringify(json));
             })) })
             .catch(function (res) { console.log(res) })
+            
     }
 
     function consultar(){

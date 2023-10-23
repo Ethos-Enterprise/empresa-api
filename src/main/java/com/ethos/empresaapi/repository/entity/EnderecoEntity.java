@@ -1,8 +1,7 @@
 package com.ethos.empresaapi.repository.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 import java.util.UUID;
 import lombok.Builder;
 import org.hibernate.annotations.Immutable;

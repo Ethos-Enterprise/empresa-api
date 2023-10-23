@@ -45,13 +45,18 @@ public class EmpresaService {
         try {
             empresaSaved = repository.save(entity);
         } catch (DataIntegrityViolationException e) {
+            String message = "";
             if (e.getMessage().contains("cnpj")) {
-                throw new EmpresaJaExisteException("Empresa com o CNPJ %s já cadastrada".formatted(entity.getCnpj()));
+                message = "Empresa com o CNPJ %s já cadastrada".formatted(entity.getCnpj());
             } else if (e.getMessage().contains("email")) {
-                throw new EmpresaJaExisteException("Empresa com o email %s já cadastrada".formatted(entity.getEmail()));
+                message = "Empresa com o email %s já cadastrada".formatted(entity.getEmail());
             } else if (e.getMessage().contains("telefone")) {
-                throw new EmpresaJaExisteException("Empresa com o telefone %s já cadastrada".formatted(entity.getTelefone()));
+                message = "Empresa com o telefone %s já cadastrada".formatted(entity.getTelefone());
             }
+            else if(e.getMessage().contains("razao_social")){
+                message = "Empresa com a razão social %s já cadastrada".formatted(entity.getRazaoSocial());
+            }
+            throw new EmpresaJaExisteException(message);
         }
 
         return empresaSaved;
@@ -148,5 +153,10 @@ public class EmpresaService {
             return addressViaCep;
         }
         return null;
+    }
+
+    public List<EmpresaResponse> getEmpresaByAssinanteNewsletter(Boolean assinanteNewsletter) {
+        List<EmpresaEntity> empresa = repository.findByAssinanteNewsletterOrderByAssinanteNewsletterAsc(assinanteNewsletter);
+        return empresa.stream().map(empresaResponseMapper::from).toList();
     }
 }

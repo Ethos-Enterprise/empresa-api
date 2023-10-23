@@ -59,4 +59,6 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, UUID> {
     List<EmpresaEntity> findBySetor(String setor);
 
     List<EmpresaEntity> findByTelefone(String telefone);
+
+    List<EmpresaEntity> findByAssinanteNewsletterOrderByAssinanteNewsletterAsc(Boolean assinanteNewsletter);
 }
