@@ -77,10 +77,8 @@ public class EmpresaService {
     }
 
     public EmpresaResponse putEmpresaById(UUID id, EmpresaRequest request) {
-        Optional<EmpresaEntity> entity;
-        entity = repository.findById(id);
-        if (entity.isEmpty()) {
-            throw new EmpresaNaoExisteException("Empresa com o id %s não existe".formatted(id));
+        if (!repository.existsById(id)) {
+            throw new EmpresaNaoExisteException("Empresa com id %s não existe".formatted(id.toString()));
         }
         if (request.razaoSocial() != null && !request.razaoSocial().isEmpty()) {
             repository.updateNome(request.razaoSocial(), id);
