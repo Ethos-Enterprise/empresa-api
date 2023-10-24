@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/v1.0/empresas")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class EmpresaController {
 
     private final EmpresaService empresaService;
