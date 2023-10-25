@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -58,7 +58,7 @@
             complemento: complemento
         }
 
-        fetch("https://empresa-api-1693494375889.azurewebsites.net/v1.0/empresas",
+        fetch("http://localhost:8080/v1.0/empresas",
         {
             method: "POST",
             headers: {
@@ -84,9 +84,12 @@
     }
 
     function consultar(){
-        fetch("https://empresa-api-1693494375889.azurewebsites.net/v1.0/empresas",
+        fetch("http://localhost:8080/v1.0/empresas",
         {
-            method: "GET"
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiYWRtaW5AZXRob3MiLCJleHAiOjE2OTgyMDcxMzh9.TNmWKisYkLvYnuPlLw0SzzgdNNO76DcP20P8a_KrHHc' 
+            }
         })
         .then(function (res) { console.log(res.json().then(json => {
             console.log(json);
@@ -121,7 +124,7 @@
         if(cnpj == ""){
             cnpj = null;
         }
-        fetch(`http://localhost:8082/empresas/v1.0/${id}`,
+        fetch(`http://localhost:8080/empresas/v1.0/${id}`,
         {
             method: "PUT",
             headers: {
@@ -147,7 +150,7 @@
         if(id == ""){
             alert("Você precisa informar o id da empresa que pretende deletar")
         }
-        fetch(`http://localhost:8082/empresas/v1.0/${id}`,
+        fetch(`http://localhost:8080/empresas/v1.0/${id}`,
         {
             method: "DELETE"
         }).then(function (res) { console.log(res)

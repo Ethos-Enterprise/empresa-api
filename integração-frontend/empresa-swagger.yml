@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  title: API de cadastro de Empresas
+  description: API com funcionalidade para gerir as empresas. Controlando operações de cadastro, remoção, busca e atualização.
+  version: 1.0.0 
+servers:
+  - url: http://localhost:8082
+    description: local
+tags:
+  - name: Empresas
+paths:
+  /v1.0/empresas:
+    post:
+      summary: Criar nova empresa
+      tags:
+        - Empresas
+      requestBody:
+          description: Dados da nova empresa.
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpresaInput'
+      responses:
+        '201':
+          description: Empresa criada com sucesso.     
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpresaResponse'
+
+    get:
+      summary: Listar empresas
+      tags:
+        - Empresas
+      responses:
+        '200':
+          description: Lista de empresas obtida com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmpresaResponse'
+
+  /v1.0/empresas/{id}:
+    get:
+      summary: Obter detalhes da uma empresa
+      tags:
+        - Empresas
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+            format: uuid
+          description: identificador da empresa
+          required: true
+      responses:
+        '200':
+          description: Detalhes da empresa obtidos com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpresaResponse'
+        '404':
+          description: Empresa não encontrada.
+    put:
+      summary: Atualizar uma empresa
+      tags:
+        - Empresas
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+            format: uuid
+          description: identificador da empresa
+          required: true
+      responses:
+        '200':
+          description: Empresa atualizada com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmpresaResponse'
+        '404':
+          description: Empresa não encontrada.
+    delete:
+      summary: Deletar empresa
+      tags:
+        - Empresas
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+            format: uuid
+          description: identificador da empresa
+          required: true
+      responses:
+        204:
+          description: Empresa deletada com sucesso.
+        404:
+          description: Empresa não encontrada.
+
+  /v1.0/empresas/{email}/{senha}:        
+    get:
+      summary: Consulta empresa por email e senha
+      tags:
+        - Empresas
+      parameters:
+        - name: email
+          in: path
+          schema:
+            type: string
+          description: email da empresa para login.
+          required: true
+        - name: senha
+          in: path
+          schema:
+            type: string
+          description: senha da empresa para login
+          required: true
+      responses:
+        200:
+          description: Detalhes da empresa obtidos com sucesso.
+        404:
+          description: Empresa não encontrada.
+
+components:
+  schemas:
+    EmpresaInput:
+      properties:
+        razaoSocial:
+          type: string
+          example: Minha Empresa
+        cnpj:
+          type: string
+          example: 78159752000197
+        telefone:
+          type: string
+          example: 11964785123
+        email:
+          type: string
+          example: email@email.com
+        senha:
+          type: string
+          example: Senha123
+        setor:
+          type: string
+          example: tecnologia
+        qtdFuncionarios:
+          type: integer
+          example: 100
+        enderecoRequest:
+          type: object
+          example: 
+          $ref: '#/components/schemas/EnderecoInput'
+    EnderecoInput:
+      properties:
+        cep:
+          type: string
+          example: 08466010
+        numero:
+          type: string
+          example: 11
+        complemento:
+          type: string
+          example: casa
+    EmpresaResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: ID da empresa
+        razaoSocial:
+          type: string
+          example: Minha Empresa
+        cnpj:
+          type: string
+          example: 78159752000197
+        telefone:
+          type: string
+          example: 11964785123
+        email:
+          type: string
+          example: email@email.com
+        senha:
+          type: string
+          example: Senha123
+        setor:
+          type: string
+          example: tecnologia
+        qtdFuncionarios:
+          type: integer
+          example: 100
