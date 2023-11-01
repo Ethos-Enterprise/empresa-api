@@ -52,8 +52,7 @@ public class EmpresaService {
                 message = "Empresa com o email %s já cadastrada".formatted(entity.getEmail());
             } else if (e.getMessage().contains("telefone")) {
                 message = "Empresa com o telefone %s já cadastrada".formatted(entity.getTelefone());
-            }
-            else if(e.getMessage().contains("razao_social")){
+            } else if (e.getMessage().contains("razao_social")) {
                 message = "Empresa com a razão social %s já cadastrada".formatted(entity.getRazaoSocial());
             }
             throw new EmpresaJaExisteException(message);
@@ -80,29 +79,50 @@ public class EmpresaService {
         if (!repository.existsById(id)) {
             throw new EmpresaNaoExisteException("Empresa com id %s não existe".formatted(id.toString()));
         }
+        EmpresaEntity entity = repository.findById(id).get();
+
         if (request.razaoSocial() != null && !request.razaoSocial().isEmpty()) {
-            repository.updateNome(request.razaoSocial(), id);
+            entity.setRazaoSocial(request.razaoSocial());
         }
         if (request.telefone() != null && !request.telefone().isEmpty()) {
-            repository.updateTelefone(request.telefone(), id);
+            entity.setTelefone(request.telefone());
         }
         if (request.cnpj() != null && !request.cnpj().isEmpty()) {
-            repository.updateCnpj(request.cnpj(), id);
+            entity.setCnpj(request.cnpj());
         }
         if (request.email() != null && !request.email().isEmpty()) {
-            repository.updateEmail(request.email(), id);
+            entity.setEmail(request.email());
         }
         if (request.senha() != null && !request.senha().isEmpty()) {
-            repository.updateSenha(request.senha(), id);
+            entity.setSenha(request.senha());
         }
         if (request.setor() != null && !request.setor().isEmpty()) {
-            repository.updateSetor(request.setor(), id);
+            entity.setSetor(request.setor());
         }
         if (request.qtdFuncionarios() != null) {
-            repository.updateQtdFuncionarios(request.qtdFuncionarios(), id);
+            entity.setQtdFuncionarios(request.qtdFuncionarios());
+        }
+        if (request.assinanteNewsletter() != null && request.assinanteNewsletter().describeConstable().isPresent()) {
+            entity.setAssinanteNewsletter(request.assinanteNewsletter());
+        }
+        if (request.enderecoRequest() != null) {
+            if (request.enderecoRequest().cep() != null && !request.enderecoRequest().cep().isEmpty()) {
+                AddressViaCep addressViaCep = getAddressViaCep(request.enderecoRequest().cep());
+                Empresa model = empresaModelMapper.from(request);
+                Empresa modelAddressUpdated = model.updateEnderecoFrom(addressViaCep);
+                entity.setEndereco(empresaEntityMapper.from(modelAddressUpdated).getEndereco());
+            }
+            if (request.enderecoRequest().numero() != null && !request.enderecoRequest().numero().isEmpty()) {
+                entity.getEndereco().setNumero(request.enderecoRequest().numero());
+            }
+            if (request.enderecoRequest().complemento() != null && !request.enderecoRequest().complemento().isEmpty()) {
+                entity.getEndereco().setComplemento(request.enderecoRequest().complemento());
+            }
         }
 
-        return repository.findById(id).map(empresaResponseMapper::from).get();
+        EmpresaEntity entityUpdated = saveEmpresa(entity);
+
+        return empresaResponseMapper.from(entityUpdated);
     }
 
     public String deleteEmpresaById(UUID id) {

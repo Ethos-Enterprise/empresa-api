@@ -36,6 +36,30 @@ public class EnderecoEntity {
         this.uf = uf;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -68,4 +92,5 @@ public class EnderecoEntity {
     public String getUf() {
         return uf;
     }
+
 }

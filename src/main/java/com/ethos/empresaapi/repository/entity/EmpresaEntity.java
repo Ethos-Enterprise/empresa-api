@@ -8,7 +8,6 @@ import org.hibernate.annotations.Immutable;
 
 import java.util.UUID;
 
-@Getter
 @Table(name = "EMPRESA")
 @Entity
 public class EmpresaEntity {
@@ -89,5 +88,45 @@ public class EmpresaEntity {
 
     public void setEndereco(EnderecoEntity endereco) {
         this.endereco = endereco;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public String getSetor() {
+        return setor;
+    }
+
+    public EnderecoEntity getEndereco() {
+        return endereco;
+    }
+
+    public Integer getQtdFuncionarios() {
+        return qtdFuncionarios;
+    }
+
+    public Boolean getAssinanteNewsletter() {
+        return assinanteNewsletter;
     }
 }
