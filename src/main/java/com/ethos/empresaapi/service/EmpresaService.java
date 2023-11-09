@@ -13,9 +13,16 @@ import com.ethos.empresaapi.mapper.EmpresaResponseMapper;
 import com.ethos.empresaapi.model.Empresa;
 import com.ethos.empresaapi.repository.EmpresaRepository;
 import com.ethos.empresaapi.repository.entity.EmpresaEntity;
+
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import com.ethos.empresaapi.service.Arquivo.ListaObj;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -119,6 +126,9 @@ public class EmpresaService {
                 entity.getEndereco().setComplemento(request.enderecoRequest().complemento());
             }
         }
+        if(request.plano() != 1){
+            repository.updatePlano(request.plano(), id);
+        }
 
         EmpresaEntity entityUpdated = saveEmpresa(entity);
 
@@ -176,5 +186,141 @@ public class EmpresaService {
     public List<EmpresaResponse> getEmpresaByAssinanteNewsletter(Boolean assinanteNewsletter) {
         List<EmpresaEntity> empresa = repository.findByAssinanteNewsletterOrderByAssinanteNewsletterAsc(assinanteNewsletter);
         return empresa.stream().map(empresaResponseMapper::from).toList();
+    }
+
+    public ListaObj<EmpresaEntity> gerarListaObj() {
+        List<EmpresaEntity> empresas = repository.findAll();
+        ListaObj<EmpresaEntity> listaObj = new ListaObj<>(empresas.size());
+
+        for (EmpresaEntity empresa : empresas) {
+            listaObj.adiciona(empresa);
+        }
+
+        return listaObj;
+    }
+    public static void gravaRegistro(String registro, String nomeArq) {
+
+        BufferedWriter saida = null;
+
+        //Bloco try-catch para abrir o arquivo
+        try{
+            saida = new BufferedWriter(new FileWriter(nomeArq, true));
+        }catch (IOException erro){
+            System.out.println("Erro ao abrir o arquivo");
+        }
+
+        //Bloco try-catch para gravar o registro e fechar o arquivo
+
+        try{
+            saida.append(registro + "\n");
+            saida.close();
+        }catch(IOException erro){
+            System.out.println("Erro ao gravar o arquivo");
+            erro.printStackTrace();
+        }
+
+    }
+
+    public static void gravaArquivoTxt(ListaObj<EmpresaEntity> lista, String nomeArq) {
+        int contaRegistroDadosGravados = 0;
+        StringBuilder content = new StringBuilder();
+
+        // Registro de Header
+        String header = "00EMPRESA";
+        header = header + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+        header = header + "01";
+        content.append(header).append(System.lineSeparator());
+
+        for (int i = 0; i < lista.getTamanho(); ++i) {
+            EmpresaEntity e = (EmpresaEntity) lista.getElemento(i);
+
+            // Registro de Corpo
+            String corpo = "02";
+            corpo = corpo + String.format("%-32s", e.getId());
+            corpo = corpo + String.format("%-60s", e.getRazaoSocial());
+            corpo = corpo + String.format("%-14s", e.getCnpj());
+            corpo = corpo + String.format("%-11s", e.getTelefone());
+            corpo = corpo + String.format("%-100s", e.getEmail());
+            corpo = corpo + String.format("%010d", e.getQtdFuncionarios());
+            corpo = corpo + String.format("%-45s", e.getSetor());
+            corpo = corpo + (e.getAssinanteNewsletter() ? "True " : "False");
+            corpo = corpo + String.format("%-32s", e.getEndereco());
+//            corpo = corpo + String.format("%032d", e.getFkPlano());
+            content.append(corpo).append(System.lineSeparator());
+            ++contaRegistroDadosGravados;
+        }
+
+        // Registro de Trailer
+        String trailer = "01";
+        trailer = trailer + String.format("%05d", contaRegistroDadosGravados);
+        content.append(trailer);
+
+        // Grava o conteúdo no arquivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArq))) {
+            writer.write(content.toString());
+        } catch (IOException e) {
+            System.err.println("Erro ao gravar no arquivo: " + e.getMessage());
+        }
+    }
+    public static void lerArquivoTxt(String nomeArq) {
+        BufferedReader entrada = null;
+        int contaRegDadosLidos = 0;
+        List<EmpresaEntity> listaLida = new ArrayList<>();
+
+        try {
+            entrada = new BufferedReader(new FileReader(nomeArq));
+        } catch (IOException e) {
+            System.err.println("Erro ao abrir o arquivo");
+            e.printStackTrace();
+            return;  // Saia da função em caso de erro de abertura do arquivo.
+        }
+
+        try {
+            for (String registro = entrada.readLine(); registro != null; registro = entrada.readLine()) {
+                String tipoRegistro = registro.substring(0, 2);
+                if (tipoRegistro.equals("00")) {
+                    System.out.println("É um registro de header");
+                    System.out.println("Tipo de arquivo: " + registro.substring(2, 9));
+                    System.out.println("Data/hora de geração do arquivo: " + registro.substring(9, 28));
+                    System.out.println("Versão do layout: " + registro.substring(28, 30));
+                } else if (tipoRegistro.equals("01")) {
+                    System.out.println("É um registro de trailer");
+                    int qtdRegDadosGravados = Integer.parseInt(registro.substring(2, 7));
+                    if (qtdRegDadosGravados == contaRegDadosLidos) {
+                        System.out.println("Quantidade de registros de dados é compatível com a quantidade de registros de dados lidos");
+                    } else {
+                        System.out.println("Quantidade de registros de dados é incompatível com a quantidade de registros de dados lidos");
+                    }
+                } else if (tipoRegistro.equals("02")) {
+                    System.out.println("É um registro de corpo");
+                    UUID id = UUID.fromString(registro.substring(2, 34).trim());
+                    String razaoSocial = registro.substring(34, 94).trim();
+                    String cnpj = registro.substring(94, 108);
+                    String telefone = registro.substring(108, 119);
+                    String email = registro.substring(119, 219);
+                    int quantidadeFuncionarios = Integer.parseInt(registro.substring(219, 229));
+                    String setor = registro.substring(229, 274).trim();
+                    Boolean assinanteNewsletter = registro.substring(274, 279).trim().equals("True");
+                    int endereco = Integer.parseInt(registro.substring(279, 311).trim());
+                    int fkPlano = Integer.parseInt(registro.substring(311).trim());
+
+                    EmpresaEntity empresa = new EmpresaEntity(id, razaoSocial, cnpj, telefone, email, quantidadeFuncionarios, setor, assinanteNewsletter, endereco, fkPlano);
+                    listaLida.add(empresa);
+                    ++contaRegDadosLidos;
+                } else {
+                    System.out.println("É um registro inválido");
+                }
+            }
+
+            entrada.close();
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo");
+            e.printStackTrace();
+        }
+
+        System.out.println("\nLista de Empresas Lida:");
+        for (EmpresaEntity empresa : listaLida) {
+            System.out.println(empresa);
+        }
     }
 }

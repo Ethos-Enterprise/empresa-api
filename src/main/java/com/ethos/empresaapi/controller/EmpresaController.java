@@ -2,6 +2,8 @@ package com.ethos.empresaapi.controller;
 
 import com.ethos.empresaapi.controller.request.EmpresaRequest;
 import com.ethos.empresaapi.controller.response.EmpresaResponse;
+import com.ethos.empresaapi.repository.entity.EmpresaEntity;
+import com.ethos.empresaapi.service.Arquivo.ListaObj;
 import com.ethos.empresaapi.service.EmpresaService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -32,12 +34,18 @@ public class EmpresaController {
     public EmpresaResponse postEmpresa(@RequestBody @Valid EmpresaRequest request) {
         return empresaService.postEmpresa(request);
     }
+    @PostMapping("/gerarTxt")
+    public void postEmpresaTxt() {
+        ListaObj<EmpresaEntity> listaObj = empresaService.gerarListaObj();
+        empresaService.gravaArquivoTxt(listaObj, "empresa");
+    }
     //localhost:8080/v1.0/empresas
     @GetMapping
     public List<EmpresaResponse> getAllEmpresa(@RequestParam(value = "nome", required = false) String nome,
                                                @RequestParam(value = "cnpj", required = false) String cnpj,
                                                @RequestParam(value = "telefone", required = false) String telefone,
-                                               @RequestParam(value = "setor", required = false) String setor) {
+                                               @RequestParam(value = "setor", required = false) String setor,
+                                               @RequestParam(value = "plano", required = false) String plano) {
         if (nome != null) {
             return empresaService.getEmpresaByNome(nome);
         } else if (cnpj != null) {
