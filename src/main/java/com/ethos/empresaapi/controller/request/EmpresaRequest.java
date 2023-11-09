@@ -16,7 +16,10 @@ public record EmpresaRequest(@NotBlank(message = "razão social em branco") @Not
                              @Min(value = 0, message = "Quantidade de funcionários deve ser um número positivo")
                              Integer qtdFuncionarios,
                              EnderecoRequest enderecoRequest,
-                             Boolean assinanteNewsletter) {
+                             Boolean assinanteNewsletter,
+
+                             int plano) {
+
     public record EnderecoRequest(String cep, String numero, String complemento) {
         @Builder(toBuilder = true)
         public EnderecoRequest {
