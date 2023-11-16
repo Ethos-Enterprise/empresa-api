@@ -136,14 +136,6 @@ public class EmpresaEntity {
         return qtdFuncionarios;
     }
 
-    public Boolean getAssinanteNewsletter() {
-        return assinanteNewsletter;
-    }
-
-    public Boolean getAssinanteNewsletter() {
-        return assinanteNewsletter;
-    }
-
     public void setPlano(PlanoEntity plano) {
         this.plano = plano;
     }

@@ -243,7 +243,6 @@ public class EmpresaService {
             corpo = corpo + String.format("%-100s", e.getEmail());
             corpo = corpo + String.format("%010d", e.getQtdFuncionarios());
             corpo = corpo + String.format("%-45s", e.getSetor());
-            corpo = corpo + (e.getAssinanteNewsletter() ? "True " : "False");
             corpo = corpo + String.format("%-32s", e.getEndereco());
 //            corpo = corpo + String.format("%032d", e.getFkPlano());
             content.append(corpo).append(System.lineSeparator());
