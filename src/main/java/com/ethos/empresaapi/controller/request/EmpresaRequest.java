@@ -13,7 +13,7 @@ public record EmpresaRequest(@NotBlank(message = "razão social em branco") @Not
                              @NotBlank(message = "telefone em branco") @NotNull(message = "telefone nulo") @Size(min = 11, max = 12, message = "Quantidade de caracteres no telefone inválido") String telefone,
                              @NotNull(message = "email nulo") @NotBlank(message = "email em branco") @Email(message = "email inválido") String email,
                              @NotNull(message = "senha nula") @NotBlank(message = "senha em branco") String senha, String setor,
-                             @Min(value = 0, message = "Quantidade de funcionários deve ser um número positivo")
+                             @Min(value = 1, message = "Quantidade de funcionários deve ser um número positivo")
                              Integer qtdFuncionarios,
                              EnderecoRequest enderecoRequest,
                              Boolean assinanteNewsletter,
