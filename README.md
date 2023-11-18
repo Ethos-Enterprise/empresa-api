@@ -1,3 +1,6 @@
+# empresa-api
+Projeto de api com java e spring boot de cadastro de empresas para a plataforma de ETHOS
+
 # Ethos-Microserviço-Empresa
 
 API dedicada às funcionalidades relacionadas às empresas no projeto Ethos, desenvolvida em Java. Destaca-se pela arquitetura modular e funcionalidades específicas.
