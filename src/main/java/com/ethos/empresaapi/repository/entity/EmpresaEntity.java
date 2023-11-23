@@ -33,17 +33,14 @@ public class EmpresaEntity {
     Integer qtdFuncionarios;
 
     Boolean assinanteNewsletter;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_plano", referencedColumnName = "id")
-    PlanoEntity plano;
+    int plano;
 
     public EmpresaEntity() {
     }
 
     @Builder(toBuilder = true)
     public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor,
-                         Integer qtdFuncionarios, Boolean assinanteNewsletter, EnderecoEntity endereco, PlanoEntity plano) {
+                         Integer qtdFuncionarios, Boolean assinanteNewsletter, EnderecoEntity endereco, int plano) {
         this.id = UUID.randomUUID();
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
@@ -136,7 +133,7 @@ public class EmpresaEntity {
         return qtdFuncionarios;
     }
 
-    public void setPlano(PlanoEntity plano) {
+    public void setPlano(int plano) {
         this.plano = plano;
     }
 }

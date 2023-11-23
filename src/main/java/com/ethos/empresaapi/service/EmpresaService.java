@@ -126,9 +126,6 @@ public class EmpresaService {
                 entity.getEndereco().setComplemento(request.enderecoRequest().complemento());
             }
         }
-        if(request.plano() != 1){
-            repository.updatePlano(request.plano(), id);
-        }
 
         EmpresaEntity entityUpdated = saveEmpresa(entity);
 
@@ -244,7 +241,6 @@ public class EmpresaService {
             corpo = corpo + String.format("%010d", e.getQtdFuncionarios());
             corpo = corpo + String.format("%-45s", e.getSetor());
             corpo = corpo + String.format("%-32s", e.getEndereco());
-//            corpo = corpo + String.format("%032d", e.getFkPlano());
             content.append(corpo).append(System.lineSeparator());
             ++contaRegistroDadosGravados;
         }
