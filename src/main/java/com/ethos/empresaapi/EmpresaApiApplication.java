@@ -12,7 +12,6 @@ public class EmpresaApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(EmpresaApiApplication.class, args);
-        System.out.println("EmpresaApiApplication is running!");
     }
 
 }
