@@ -4,7 +4,6 @@ import com.ethos.empresaapi.repository.entity.EmpresaEntity;
 import java.util.List;
 import java.util.UUID;
 
-import com.ethos.empresaapi.repository.entity.PlanoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
