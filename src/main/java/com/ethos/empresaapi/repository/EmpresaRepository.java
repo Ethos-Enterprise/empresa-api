@@ -3,9 +3,12 @@ package com.ethos.empresaapi.repository;
 import com.ethos.empresaapi.repository.entity.EmpresaEntity;
 import java.util.List;
 import java.util.UUID;
+
+import com.ethos.empresaapi.repository.entity.PlanoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,8 +50,13 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, UUID> {
 
     @Transactional
     @Modifying
-    @Query("update EmpresaEntity e set e.qtdFuncionarios = ?1 where e.id = ?2")
+    @Query("update EmpresaEntity e set e.email = ?1 where e.id = ?2")
     List<EmpresaEntity> findByEmail(String email);
+
+    @Transactional
+    @Modifying
+    @Query("update EmpresaEntity e set e.plano = ?1 where e.id = ?2")
+    void updatePlano(@Param("plano") int plano, @Param("id") UUID id);
 
     List<EmpresaEntity> findByRazaoSocial(String razaoSocial);
 
