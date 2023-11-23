@@ -4,10 +4,10 @@ import com.ethos.empresaapi.api.addressdto.AddressViaCep;
 import lombok.Builder;
 
 public record Empresa(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, Endereco endereco,
-                      Integer qtdFuncionarios, Boolean assinanteNewsletter, int plano) {
+                      Integer qtdFuncionarios, Boolean assinanteNewsletter, int fkPlano) {
     @Builder(toBuilder = true)
     public Empresa(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, Endereco endereco,
-                   Integer qtdFuncionarios, Boolean assinanteNewsletter, int plano) {
+                   Integer qtdFuncionarios, Boolean assinanteNewsletter, int fkPlano) {
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
         this.telefone = telefone;
@@ -17,7 +17,7 @@ public record Empresa(String razaoSocial, String cnpj, String telefone, String e
         this.endereco = endereco;
         this.qtdFuncionarios = qtdFuncionarios;
         this.assinanteNewsletter = assinanteNewsletter;
-        this.plano = plano;
+        this.fkPlano = fkPlano;
 
     }
 

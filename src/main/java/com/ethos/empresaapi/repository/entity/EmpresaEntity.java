@@ -34,14 +34,14 @@ public class EmpresaEntity {
     Integer qtdFuncionarios;
 
     Boolean assinanteNewsletter;
-    int plano;
+    int fkPlano;
 
     public EmpresaEntity() {
     }
 
     @Builder(toBuilder = true)
     public EmpresaEntity(String razaoSocial, String cnpj, String telefone, String email, String senha, String setor, Integer qtdFuncionarios,
-                         Boolean assinanteNewsletter, EnderecoEntity endereco, int plano) {
+                         Boolean assinanteNewsletter, EnderecoEntity endereco, int fkPlano) {
         this.id = UUID.randomUUID();
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
@@ -52,12 +52,12 @@ public class EmpresaEntity {
         this.qtdFuncionarios = qtdFuncionarios;
         this.assinanteNewsletter = assinanteNewsletter;
         this.endereco = endereco;
-        this.plano = plano;
+        this.fkPlano = fkPlano;
     }
 
 
     public EmpresaEntity(UUID id, String razaoSocial, String cnpj, String telefone, String email, int quantidadeFuncionarios, String setor,
-                         Boolean assinanteNewsletter, int endereco, int plano) {
+                         Boolean assinanteNewsletter, int endereco, int fkPlano) {
     }
 
     public void setAssinanteNewsletter(Boolean assinanteNewsletter) {
@@ -136,7 +136,7 @@ public class EmpresaEntity {
         this.qtdFuncionarios = qtdFuncionarios;
     }
 
-    public void setPlano(int plano) {
-        this.plano = plano;
+    public void setFkPlano(int fkPlano) {
+        this.fkPlano = fkPlano;
     }
 }

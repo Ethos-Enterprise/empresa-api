@@ -45,7 +45,7 @@ public class EmpresaController {
                                                @RequestParam(value = "cnpj", required = false) String cnpj,
                                                @RequestParam(value = "telefone", required = false) String telefone,
                                                @RequestParam(value = "setor", required = false) String setor,
-                                               @RequestParam(value = "plano", required = false) String plano) {
+                                               @RequestParam(value = "fkPlano", required = false) String plano) {
         if (nome != null) {
             return empresaService.getEmpresaByNome(nome);
         } else if (cnpj != null) {

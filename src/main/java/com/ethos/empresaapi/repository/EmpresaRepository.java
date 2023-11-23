@@ -54,8 +54,8 @@ public interface EmpresaRepository extends JpaRepository<EmpresaEntity, UUID> {
 
     @Transactional
     @Modifying
-    @Query("update EmpresaEntity e set e.plano = ?1 where e.id = ?2")
-    void updatePlano(@Param("plano") int plano, @Param("id") UUID id);
+    @Query("update EmpresaEntity e set e.fkPlano = ?1 where e.id = ?2")
+    void updatePlano(@Param("fkPlano") int plano, @Param("id") UUID id);
 
     List<EmpresaEntity> findByRazaoSocial(String razaoSocial);
 

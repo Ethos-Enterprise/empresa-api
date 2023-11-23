@@ -18,7 +18,7 @@ public record EmpresaRequest(@NotBlank(message = "razão social em branco") @Not
                              EnderecoRequest enderecoRequest,
                              Boolean assinanteNewsletter,
 
-                             int plano) {
+                             int fkPlano) {
 
     public record EnderecoRequest(String cep, String numero, String complemento) {
         @Builder(toBuilder = true)
