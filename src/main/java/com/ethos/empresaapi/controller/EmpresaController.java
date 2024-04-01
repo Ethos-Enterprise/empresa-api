@@ -82,4 +82,8 @@ public class EmpresaController {
     public List<EmpresaResponse> getEmpresaByAssinanteNewsletter(@RequestParam Boolean assinanteNewsletter) {
         return empresaService.getEmpresaByAssinanteNewsletter(assinanteNewsletter);
     }
+    @GetMapping("/lerArquivoTxt")
+    public void lerArquivoTxt(@RequestParam String nomeArq) {
+        empresaService.lerArquivoTxt(nomeArq);
+    }
 }
