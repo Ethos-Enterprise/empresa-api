@@ -16,9 +16,9 @@ spring:
     init:
       continue-on-error: true
   datasource:
-    url: jdbc:postgresql://postgres:5432/postgres
-    username: admin
-    password: senha123
+    url: ${DB_URL:jdbc:postgresql://database-1.cx20iggse9kp.us-east-1.rds.amazonaws.com:5432/postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:senha123}
 
     driver-class-name: org.postgresql.Driver
   jpa:
