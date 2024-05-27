@@ -1,0 +1,42 @@
+name: Deploy to EC2
+on:
+  #depois que realizar o push no docker-hub, o deploy será realizado'
+  workflow_run:
+    workflows: [ "Docker Image CI" ]
+    types:
+      - completed
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Copy SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy to EC2 instance 1
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@44.198.241.238 << 'EOF'
+            ssh -o StrictHostKeyChecking=no ubuntu@10.0.0.171 << 'INNER_EOF'
+              cd /path/to/your/docker-compose/directory
+              docker-compose pull
+              docker-compose up -d
+            INNER_EOF
+          EOF
+      - name: Deploy to EC2 instance 2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@44.198.241.238 << 'EOF'
+            ssh -o StrictHostKeyChecking=no ubuntu@10.0.0.159 << 'INNER_EOF'
+              cd /docker-compose-ethos
+              docker-compose pull
+              docker-compose up -d
+            INNER_EOF
+          EOF
