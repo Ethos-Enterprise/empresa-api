@@ -4,9 +4,7 @@ on:
     workflows: [ "Docker Image CI" ]
     types:
       - completed
-  push:
-    branches:
-      - main
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -37,8 +35,8 @@ jobs:
           ssh -t -o StrictHostKeyChecking=no ubuntu@44.198.241.238 << 'EOF'
             ssh-keygen -f "/home/ubuntu/.ssh/known_hosts" -R "10.0.0.159"
             ssh -t -i /home/ubuntu/.ssh/ethos.pem -o StrictHostKeyChecking=no ubuntu@10.0.0.159 << 'INNER_EOF'
-              cd /docker-compose-ethos
+              cd docker-compose-ethos
               docker-compose -f stack.yaml pull
               docker-compose -f stack.yaml up -d
-            INNER_EOF
+             INNER_EOF
           EOF
