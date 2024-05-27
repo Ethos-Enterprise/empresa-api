@@ -38,5 +38,5 @@ jobs:
               cd docker-compose-ethos
               docker-compose -f stack.yaml pull
               docker-compose -f stack.yaml up -d
-             INNER_EOF
+            INNER_EOF
           EOF
