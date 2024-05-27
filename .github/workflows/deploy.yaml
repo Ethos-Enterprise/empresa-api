@@ -25,6 +25,7 @@ jobs:
           ssh -t -o StrictHostKeyChecking=no ubuntu@44.198.241.238 << 'EOF'
             ssh-keygen -f "/home/ubuntu/.ssh/known_hosts" -R "10.0.0.171"
             ssh -t -i /home/ubuntu/.ssh/ethos.pem -o StrictHostKeyChecking=no ubuntu@10.0.0.171 << 'INNER_EOF'
+              ls
               cd /docker-compose-ethos
               docker-compose -f stack.yaml pull
               docker-compose -f stack.yaml up -d
