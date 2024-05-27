@@ -24,7 +24,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@44.198.241.238 << 'EOF'
             ssh -o StrictHostKeyChecking=no ubuntu@10.0.0.171 << 'INNER_EOF'
-              cd /path/to/your/docker-compose/directory
+              cd /docker-compose-ethos
               docker-compose pull
               docker-compose up -d
             INNER_EOF
