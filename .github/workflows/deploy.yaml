@@ -11,16 +11,9 @@ jobs:
     runs-on: self-hosted
 
     steps:
-
-      - name: Copy SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-
       - name: deploy na ec2 privada
         run: |
-          ssh -t -i /home/ubuntu/.ssh/ethos.pem -o StrictHostKeyChecking=no ubuntu@10.0.0.171 << 'EOF'
+          ssh -t -i /home/ubuntu/.ssh/ethos.pem -o StrictHostKeyChecking=no ubuntu@10.0.0.171
             cd docker-compose-ethos
             docker-compose -f stack.yaml pull
             docker-compose -f stack.yaml up -d
-          EOF
