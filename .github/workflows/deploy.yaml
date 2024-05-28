@@ -26,7 +26,6 @@ jobs:
               cd docker-compose-ethos
               docker-compose -f stack.yaml pull
               docker-compose -f stack.yaml up -d
-            INNER_EOF
           EOF
 
       - name: Deploy to EC2 instance 2
